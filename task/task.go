@@ -68,7 +68,7 @@ func dir(name string) string {
 }
 
 func OpenList(name string) *List {
-	return &List{name: name, dir: dir(name)}
+	return &List{name: name, dir: dir(name), cache: make(map[string]*Task)}
 }
 
 func (l *List) Name() string {
@@ -115,9 +115,6 @@ func (l *List) read(id string) (*Task, error) {
 	// l is locked
 	if t := l.cache[id]; t != nil {
 		return t, nil
-	}
-	if l.cache == nil {
-		l.cache = make(map[string]*Task)
 	}
 
 	file := filepath.Join(l.dir, id+".todo")
